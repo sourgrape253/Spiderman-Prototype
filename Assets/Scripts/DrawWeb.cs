@@ -1,0 +1,70 @@
+﻿using UnityEngine;
+
+[RequireComponent(typeof(LineRenderer))]
+public class DrawWeb : MonoBehaviour
+{
+    public Transform playerTr;
+    public Transform target1;
+    private Transform curTarget;
+    LineRenderer lr;
+    private bool isTarget1 = true;
+    public bool hasParent;
+
+    // Use this for initialization
+    void Start()
+    {
+
+        lr = GetComponent<LineRenderer>();
+        if (hasParent)
+        {
+            lr.SetPosition(1, transform.InverseTransformPoint(playerTr.position));
+        }
+        else
+        {
+            lr.SetPosition(1, playerTr.position);
+        }
+
+        curTarget = target1;
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                print(hit.transform.name);
+                lr.enabled = true;
+            }
+        }
+        else if (Input.GetButtonDown("Fire2"))
+        {
+            lr.enabled = false;
+        }
+
+        lr = GetComponent<LineRenderer>();
+        if (hasParent)
+        {
+            lr.SetPosition(1, transform.InverseTransformPoint(playerTr.position));
+        }
+        else
+        {
+            lr.SetPosition(1, playerTr.position);
+        }
+
+        if (hasParent)
+        {
+            lr.SetPosition(0, transform.InverseTransformPoint(curTarget.position));
+        }
+        else
+        {
+            lr.SetPosition(0, curTarget.position);
+        }
+
+    }
+
+}
